@@ -8,11 +8,12 @@ from http.server import (
     BaseHTTPRequestHandler,
     HTTPServer,
 )
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, Tuple
 
 import config
 from domain.services.auth import ADMIN_LOGIN, ADMIN_SALT, SALT, check_auth
-from domain.validators.requests import MethodRequestModel
+from domain.requests.base import MethodRequestModel
+from domain.utils import get_validation_errors
 from presentation.http_routers.interests import handle_clients_interests
 from presentation.http_routers.score import handle_online_score
 from presentation.http.schemas.codes import (
@@ -24,28 +25,27 @@ from presentation.http.schemas.codes import (
     OK,
 )
 from presentation.http.schemas.errors import ERRORS
-
+from pydantic import ValidationError
 
 METHOD_HANDLERS = {
     "online_score": handle_online_score,
     "clients_interests": handle_clients_interests,
 }
 
-
 def method_handler(
-    request: dict[str, Any],
-    ctx: dict[str, Any],
-    settings: dict[str, Any] = None,
-) -> tuple[dict[str, Any], int]:
+    request: Dict[str, Any],
+    ctx: Dict[str, Any],
+    settings: Dict[str, Any] = None,
+) -> Tuple[Dict[str, Any], int]:
     """Основной обработчик метода /method."""
     body = request.get("body", {})
     settings = settings or {}
 
     # Валидируем базовый запрос
-    method_request = MethodRequestModel(**body)
-    errors = method_request.validate()
-    if errors:
-        return {"error": "; ".join(errors)}, INVALID_REQUEST
+    try:
+        method_request = MethodRequestModel(**body)
+    except ValidationError as e:
+        return {"error": get_validation_errors(e)}, INVALID_REQUEST
 
     # Проверяем аутентификацию
     if not check_auth(method_request):
@@ -64,7 +64,7 @@ def method_handler(
 
 
 class MainHTTPHandler(BaseHTTPRequestHandler):
-    router: dict[str, Callable] = {"method": method_handler}
+    router: Dict[str, Callable] = {"method": method_handler}
 
     def get_request_id(self, headers: Message) -> str:
         return headers.get("HTTP_X_REQUEST_ID", uuid.uuid4().hex)
@@ -100,7 +100,10 @@ class MainHTTPHandler(BaseHTTPRequestHandler):
         if code not in ERRORS:
             r = {"response": response, "code": code}
         else:
-            error_msg = response if response and isinstance(response, str) else ERRORS.get(code, "Unknown Error")
+            error_msg = (
+                response if response and isinstance(response, str)
+                else ERRORS.get(code, "Unknown Error")
+            )
             r = {"error": error_msg, "code": code}
         context.update(r)
         logging.info(context)

@@ -7,11 +7,6 @@ from domain.validators.date import validate_date
 from domain.validators.email import validate_email
 from domain.validators.gender import validate_gender
 from domain.validators.phone import validate_phone
-from domain.validators.requests import (
-    ClientsInterestsArguments,
-    MethodRequestModel,
-    OnlineScoreArguments,
-)
 
 __all__ = [
     "validate_phone",
@@ -21,7 +16,4 @@ __all__ = [
     "validate_gender",
     "validate_char",
     "validate_client_ids",
-    "OnlineScoreArguments",
-    "ClientsInterestsArguments",
-    "MethodRequestModel",
 ]

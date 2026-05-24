@@ -2,21 +2,22 @@
 
 from typing import Any, Dict, Tuple
 
-from domain.validators.requests import MethodRequestModel, OnlineScoreArguments
+from domain.requests.score import OnlineScoreArguments
+from domain.requests.base import MethodRequestModel
+from domain.utils import get_validation_errors
 from presentation.http.schemas.codes import INVALID_REQUEST, OK
+from pydantic import ValidationError
 from scoring import get_score
-
 
 def handle_online_score(
     request: MethodRequestModel, ctx: Dict[str, Any]
 ) -> Tuple[Dict[str, Any], int]:
     """Обработчик метода online_score."""
     arguments = request.arguments or {}
-    score_args = OnlineScoreArguments(**arguments)
-    errors = score_args.validate()
-
-    if errors:
-        return {"error": "; ".join(errors)}, INVALID_REQUEST
+    try:
+        score_args = OnlineScoreArguments(**arguments)
+    except ValidationError as e:
+        return {"error": get_validation_errors(e)}, INVALID_REQUEST
 
     # Контекст
     ctx["has"] = score_args.get_has_fields()

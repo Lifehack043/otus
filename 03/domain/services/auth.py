@@ -3,7 +3,7 @@
 import datetime
 import hashlib
 
-from domain.validators.requests import MethodRequestModel
+from domain.requests.base import MethodRequestModel
 
 SALT = "Otus"
 ADMIN_LOGIN = "admin"
