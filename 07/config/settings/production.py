@@ -6,7 +6,7 @@ import os
 
 from .base import *  # noqa: F401, F403
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
