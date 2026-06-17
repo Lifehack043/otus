@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Результаты: {{ question.question_text }}{% endblock %}
+
+{% block content %}
+  <h1>{{ question.question_text }}</h1>
+
+  <ul class="results-list">
+    {% for choice in question.choice_set.all %}
+      <li class="result-item">
+        <span class="choice-text">{{ choice.choice_text }}</span>
+        <span class="votes">{{ choice.votes }} {{ choice.votes|pluralize:"голос,голоса,голосов" }}</span>
+        <div class="progress-bar">
+          <div class="progress" style="width: {% widthratio choice.votes total_votes 100 %}%"></div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <p class="total">
+    Всего: {{ total_votes }} {{ total_votes|pluralize:"голос,голоса,голосов" }}
+  </p>
+
+  <a href="{% url 'polls:detail' question.pk %}" class="btn">Голосовать снова</a>
+  <a href="{% url 'polls:index' %}" class="btn btn-secondary">Назад к списку</a>
+{% endblock %}
