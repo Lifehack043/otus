@@ -1,0 +1,19 @@
+from __future__ import annotations
+
+from typing import Protocol, Optional, List
+
+from .model import Reservation, TimeSlot, Table, TableId, TableCapacity, TimeSlot as TableTimeSlot
+
+
+# Repository Port (выходной порт)
+class ReservationRepository(Protocol):
+    def get(self, reservation_id: str) -> Optional[Reservation]: ...
+    def add(self, reservation: Reservation) -> None: ...
+    def list_for_slot(self, slot: TimeSlot) -> List[Reservation]: ...
+
+
+# Table Repository Port (выходной порт)
+class TableRepository(Protocol):
+    def get(self, table_id: TableId) -> Optional[Table]: ...
+    def add(self, table: Table) -> None: ...
+    def list_available(self, slot: TimeSlot, min_capacity: int) -> List[Table]: ...
