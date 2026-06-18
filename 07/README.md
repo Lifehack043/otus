@@ -50,9 +50,9 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Откройте [http://localhost:8000](http://localhost:8000) в браузере.
+Откройте [http://localhost:8000](http://localhost) в браузере.
 
-Админ-панель: [http://localhost:8000/admin](http://localhost:8000/admin)
+Админ-панель: [http://localhost:8000/admin](http://localhost/admin)
 
 ### Docker
 
