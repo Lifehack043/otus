@@ -6,8 +6,6 @@ from app.services.client import create_client
 
 
 class OpenMeteoGeocoding(GeocodingProvider):
-    """Resolve city name to (lat, lon) via Open-Meteo Geocoding API."""
-
     async def resolve(self, city: str) -> tuple[float, float]:
         url = "https://geocoding-api.open-meteo.com/v1/search"
         params = {"name": city, "count": 1, "language": "ru", "format": "json"}

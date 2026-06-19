@@ -10,13 +10,12 @@ router = APIRouter()
 
 
 def get_weather_service() -> WeatherService:
-    """Dependency placeholder — overridden in app factory."""
     raise RuntimeError("WeatherService not injected")
 
 
 @router.get("/weather", response_model=WeatherResponse)
 async def get_weather(
-    city: str = Query(..., min_length=1, description="City name, e.g. Moscow"),
+    city: str = Query(..., min_length=1),
     service: WeatherService = Depends(get_weather_service),
 ) -> WeatherResponse:
     try:

@@ -25,8 +25,6 @@ def _format_error(exc: Exception) -> str:
 
 
 class WeatherService:
-    """Orchestrates: geocode city → fetch weather from providers in parallel."""
-
     def __init__(
         self,
         geocoder: GeocodingProvider,

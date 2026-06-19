@@ -4,8 +4,6 @@ from app.models import WeatherResponse
 
 
 class AllProvidersFailed(Exception):
-    """Raised when every weather provider returns an error."""
-
     def __init__(self, city: str, response: WeatherResponse):
         self.city = city
         self.response = response
@@ -13,8 +11,6 @@ class AllProvidersFailed(Exception):
 
 
 class GeocodingFailed(Exception):
-    """City was not resolved to coordinates."""
-
     def __init__(self, city: str, message: str):
         self.city = city
         self.message = message

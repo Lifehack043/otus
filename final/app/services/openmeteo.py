@@ -6,8 +6,6 @@ from app.services.client import create_client
 
 
 class OpenMeteoProvider(WeatherProvider):
-    """Open-Meteo current weather by coordinates."""
-
     @property
     def display_name(self) -> str:
         return "Open-Meteo"

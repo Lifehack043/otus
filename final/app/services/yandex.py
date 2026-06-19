@@ -6,8 +6,6 @@ from app.services.client import create_client
 
 
 class YandexWeatherProvider(WeatherProvider):
-    """Yandex.Weather by coordinates."""
-
     @property
     def display_name(self) -> str:
         return "Yandex.Weather"

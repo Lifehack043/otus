@@ -6,8 +6,6 @@ from app.services.client import create_client
 
 
 class WeatherApiProvider(WeatherProvider):
-    """WeatherAPI client."""
-
     @property
     def display_name(self) -> str:
         return "WeatherAPI"
