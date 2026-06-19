@@ -5,7 +5,7 @@ FastAPI-приложение параллельно запрашивает по�
 ## Установка
 
 ```bash
-pip3 install -r requirements.txt
+uv sync
 ```
 
 ## Конфигурация

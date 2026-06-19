@@ -5,7 +5,7 @@ GET /weather?city={city}
 Параллельный запрос к OpenWeatherMap + WeatherAPI.
 
 Запуск:
-    pip3 install -r requirements.txt
+    uv sync
     python3 -m uvicorn main:app --reload
 """
 
